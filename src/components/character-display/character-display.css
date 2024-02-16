@@ -1,0 +1,27 @@
+.app__container__character {
+    border: 3px solid blue;
+    border-radius: 10px;
+    list-style-type:none;
+    list-style-image:none;
+    padding-left: 0;
+}
+
+.app__container__character-health {
+    padding: 10px 0;
+    margin-bottom: 20px;
+    font-size: 1.25em;
+}
+
+.app__container__character-stat {
+    margin-bottom: 5px;
+}
+
+.app__container__character-left {
+    grid-column: 1 / 2;
+    grid-row: 1;
+}
+
+.app__container__character-right {
+    grid-column: 4 / 5;
+    grid-row: 1;
+}

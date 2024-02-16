@@ -1,0 +1,18 @@
+.app__container__game-state {
+    grid-column: 2 / 4;
+    grid-row: 1;
+    font-size: 3em;
+    font-weight:bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .app__container__game-state__time {
+    flex-grow: 0;
+    margin-bottom: 20px;
+    font-size: 2em;
+  }
+
+  /* .app__container__game-state__state {} */
