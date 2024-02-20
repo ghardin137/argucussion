@@ -5,7 +5,7 @@ export function CharacterDisplay({ player, className }: {player: Character, clas
     return <div className={`character-display ${className}`}>
         <h2>{player.name}</h2>
         <ul className="app__container__character">
-            <li className="app__container__character-health">Health: {player.health}</li>
+            <li className="app__container__character-health">Health: {player.health} {player?.recentHit}</li>
             <li className="app__container__character-stat">Charm: {player.charm}</li>
             <li className="app__container__character-stat">Imagery: {player.imagery}</li>
             <li className="app__container__character-stat">Insight: {player.insight}</li>

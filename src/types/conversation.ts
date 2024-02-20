@@ -16,7 +16,13 @@ export type Message = {
         failure: string[];
     };
     children: string[];
-    strength: number;
 }
 
 export type ResponseMessage = Omit<Message, "primaryStat" | "response" | "children">
+
+export type Conversation = {
+    id: string;
+    successMessage: string;
+    failMessage: string;
+    questions: string[];
+}
