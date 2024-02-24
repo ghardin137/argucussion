@@ -7,13 +7,22 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background-color: rgba(0,0,0,.5);
+    border-radius: 10px;
   }
 
   .app__container__game-state__time {
     flex-grow: 0;
-    margin-top: 25px;
     font-size: 2em;
     flex-shrink: 0;
+  }
+
+  .app__container__game-state__time.low {
+    color: orange;
+  }
+
+  .app__container__game-state__time.danger {
+    color: darkred;
   }
 
   .app__container__game-state__spacer {
