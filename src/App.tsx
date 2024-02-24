@@ -14,7 +14,7 @@ function App() {
   const [npc, setNPC] = useState<Character>(NPC);
   const [playerQuestions, setPlayerQuestions] = useState<Message[]>(conversation.questions.map((id) => messages[id] as Message));
   const [npcResponse, setNPCResponse] = useState<ResponseMessage>();
-  const [gameState, setGameState] = useState<"win" | "lose" | undefined>();
+  const [_gameState, setGameState] = useState<"win" | "lose" | undefined>();
   const [moveTaken, setMoveTaken] = useState(false);
   const [time, setTime] = useState(99);
 
