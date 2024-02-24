@@ -99,8 +99,8 @@ export const messages: Record<string, Message | ResponseMessage> = {
 
 export const conversation: Conversation = {
     id: "conv1",
-    successMessage: "I'll tell ya what you wanna know copper",
-    failMessage: "I ain't talkin!",
+    successMessage: { id: 'win', type: MessageType.Response, text: "I'll tell ya what you wanna know copper" },
+    failMessage: { id: 'lose', type: MessageType.Response, text: "I ain't talkin!" },
     questions: [
         "message1",
         "message2",

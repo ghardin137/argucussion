@@ -22,7 +22,7 @@ export type ResponseMessage = Omit<Message, "primaryStat" | "response" | "childr
 
 export type Conversation = {
     id: string;
-    successMessage: string;
-    failMessage: string;
+    successMessage: ResponseMessage;
+    failMessage: ResponseMessage;
     questions: string[];
 }

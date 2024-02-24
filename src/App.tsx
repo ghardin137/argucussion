@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { CharacterDisplay } from './components/character-display';
 import { MessageList } from './components/message-list';
 import { GameState } from './components/game-state';
 import { Player, NPC, messages, Stats, conversation } from './data';
 import { Character, Message, ResponseMessage } from './types';
 import './App.css'
+import playerImage from './assets/main_player_demo.png';
+import npcImage from './assets/goblin-banker.png';
 
 function App() {
   const [selectedMessage, setSelectedMessage] = useState('');
@@ -14,6 +16,9 @@ function App() {
   const [npcResponse, setNPCResponse] = useState<ResponseMessage>();
   const [gameState, setGameState] = useState<"win" | "lose" | undefined>();
   const [moveTaken, setMoveTaken] = useState(false);
+  const [time, setTime] = useState(99);
+
+  const countdownRef = useRef<number>();
 
   const determineHit = (message: Message) => {
     const { primaryStat } = message;
@@ -27,7 +32,7 @@ function App() {
   }
 
   const statModifier = (stat: number) => {
-    return Math.floor((stat / 3) * (stat / 3));
+    return Math.floor(Math.pow((stat / 3), 2));
   }
 
   const determineHitStrength = (hit: boolean, message: Message) => {
@@ -78,10 +83,13 @@ function App() {
         } else {
           setPlayerQuestions(conversation.questions.map(child => messages[child] as Message)); 
         }
-        setNPCResponse(undefined);
         setMoveTaken(false);
         setSelectedMessage('');
-      }, 2000);
+        setNPC(npc => ({
+          ...npc,
+          recentHit: undefined,
+        }))
+      }, 1000);
     } else {
       response = messages[message.response.failure[Math.floor(Math.random() * message.response.failure.length)]] as ResponseMessage;
       setPlayer(player => ({
@@ -90,28 +98,54 @@ function App() {
         recentHit: - strength,
       }))
       setTimeout(() => {
-        setNPCResponse(undefined);
         setMoveTaken(false);
         setSelectedMessage('');
-      }, 2000);
+        setPlayer(player => ({
+          ...player,
+          recentHit: undefined,
+        }))
+      }, 1000);
     }
     setNPCResponse(response);
   }
 
   useEffect(() => {
-    if(player.health <= 0) {
-      setGameState("lose");
-    }
-    if(npc.health <= 0) {
+    countdownRef.current = setInterval(() => setTime(prev => prev - 1), 1000);
+    return () => clearInterval(countdownRef.current);
+  }, []);
+
+
+  useEffect(() => {
+    const win = () => {
       setGameState("win");
+      setNPCResponse(conversation.successMessage);
+      clearInterval(countdownRef.current);   
     }
-  }, [player, npc])
+
+    const lose = () => {
+      setGameState("lose");
+      setNPCResponse(conversation.failMessage);
+      clearInterval(countdownRef.current);   
+    }
+
+    if(time === 0) {
+      if(player.health <= npc.health) {
+        lose();
+      } else {
+        win();
+      }
+    } else if(player.health <= 0) {
+      lose();
+    } else if(npc.health <= 0) {
+       win();
+    }
+  }, [player, npc, time])
 
   return (
     <div className="app__container">
-      <CharacterDisplay player={player} className="app__container__character-left"/>
-      <GameState gameState={gameState} time="99" />
-      <CharacterDisplay player={npc} className="app__container__character-right"/>
+      <GameState time={time} />
+      <CharacterDisplay character={player} className="app__container__character-left" image={playerImage}/>
+      <CharacterDisplay character={npc} className="app__container__character-right" image={npcImage}/>
       <MessageList messages={playerQuestions} selectedMessage={selectedMessage} chooseMessage={handleChooseMessage} className="app__container__messages-left"/>
       {npcResponse && <MessageList messages={[npcResponse as Message]} selectedMessage={npcResponse.id} chooseMessage={() => {}} className="app__container__messages-right" showBack={false}/>}
     </div>

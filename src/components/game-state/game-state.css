@@ -11,8 +11,13 @@
 
   .app__container__game-state__time {
     flex-grow: 0;
-    margin-bottom: 20px;
+    margin-top: 25px;
     font-size: 2em;
+    flex-shrink: 0;
+  }
+
+  .app__container__game-state__spacer {
+    flex-grow: 1;
   }
 
   /* .app__container__game-state__state {} */

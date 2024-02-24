@@ -1,18 +1,29 @@
+import { useState } from 'react';
 import { Character } from '../../types';
 import './character-display.css';
 
-export function CharacterDisplay({ player, className }: {player: Character, className: string }) {
+export function CharacterDisplay({ character, className, image }: { character: Character, className: string, image: string }) {
+    const [showStats, setShowStats] = useState(false);
+
     return <div className={`character-display ${className}`}>
-        <h2>{player.name}</h2>
-        <ul className="app__container__character">
-            <li className="app__container__character-health">Health: {player.health} {player?.recentHit}</li>
-            <li className="app__container__character-stat">Charm: {player.charm}</li>
-            <li className="app__container__character-stat">Imagery: {player.imagery}</li>
-            <li className="app__container__character-stat">Insight: {player.insight}</li>
-            <li className="app__container__character-stat">Intuition: {player.intuition}</li>
-            <li className="app__container__character-stat">Observation: {player.observation}</li>
-            <li className="app__container__character-stat">Wit: {player.wit}</li>
-        </ul>
+        <h2 onMouseOver={() => setShowStats(true)} onMouseOut={() => setShowStats(false)}>{character.name}</h2>
+        <div className="character-display__health-bar">
+            <div className="character-display__health-bar__full" style={{flexGrow: character.health }}/>
+            <div className="character-display__health-bar__empty" style={{flexGrow: 100-character.health }}/>
+        </div>
+        {showStats &&
+            <ul className="character-display__character-stats">
+                <li className="character-display__character-stat">Charm: {character.charm}</li>
+                <li className="character-display__character-stat">Imagery: {character.imagery}</li>
+                <li className="character-display__character-stat">Insight: {character.insight}</li>
+                <li className="character-display__character-stat">Intuition: {character.intuition}</li>
+                <li className="character-display__character-stat">Observation: {character.observation}</li>
+                <li className="character-display__character-stat">Wit: {character.wit}</li>
+            </ul>
+        }
+        <div className="character-display__image">
+            <img src={image} />
+        </div>
     </div>
 }
 
