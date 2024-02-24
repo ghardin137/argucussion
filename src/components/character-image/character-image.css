@@ -1,0 +1,19 @@
+.character-image {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    grid-row: 3 / 5;
+}
+
+.character-image__left {
+    grid-column: 1;
+}
+
+.character-image__right {
+    grid-column: 6;
+}
+
+.character-image img {
+    height: 100%;
+}

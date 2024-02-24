@@ -1,0 +1,17 @@
+.app__game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    background: rgba(0,0,0,1);
+    padding: 20px 40px;
+    border-radius: 10px;
+}
+
+.app__game-over h1 {
+    margin-top: 10px;
+}
+
+.app__game-over h3 {
+    margin: 0;
+}

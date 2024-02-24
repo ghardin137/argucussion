@@ -12,7 +12,7 @@ type MessageListProps = {
 export function MessageList({ messages, chooseMessage, selectedMessage, showBack = true, className }: MessageListProps) {
     return <ul className={`app__container__messages ${className}`}>
         {messages.map(message => (
-            <li key={message.id} onClick={() => chooseMessage(message.id)} className={`app__container__messages_message ${selectedMessage === message.id ? 'app__container__messages_message-selected' : ''}`}>
+            <li key={message.id} onClick={() => chooseMessage(message.id)} className={`app__container__messages_message`}>
                 {message.text} {message.primaryStat && '(' + message.primaryStat?.slice(0, 1).toUpperCase() + message.primaryStat?.slice(1) + ')'}
             </li>
         ))}

@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { CharacterDisplay } from './components/character-display';
+import { CharacterImage } from './components/character-image';
 import { MessageList } from './components/message-list';
 import { GameState } from './components/game-state';
+import { GameOver } from './components/game-over';
 import { Player, NPC, messages, Stats, conversation } from './data';
 import { Character, Message, ResponseMessage } from './types';
 import './App.css'
@@ -14,7 +16,7 @@ function App() {
   const [npc, setNPC] = useState<Character>(NPC);
   const [playerQuestions, setPlayerQuestions] = useState<Message[]>(conversation.questions.map((id) => messages[id] as Message));
   const [npcResponse, setNPCResponse] = useState<ResponseMessage>();
-  const [_gameState, setGameState] = useState<"win" | "lose" | undefined>();
+  const [gameState, setGameState] = useState<"win" | "lose" | undefined>();
   const [moveTaken, setMoveTaken] = useState(false);
   const [time, setTime] = useState(99);
 
@@ -51,7 +53,7 @@ function App() {
   }
 
   const handleChooseMessage = (id:string) => {
-    if(moveTaken) return;
+    if(moveTaken || !!gameState) return;
     setMoveTaken(true);
     const message = messages[id] as Message;
     let order = conversation.questions;
@@ -75,38 +77,39 @@ function App() {
       setNPC(npc => ({
         ...npc,
         health: npc.health - strength,
-        recentHit: - strength,
       }))
+      if(order.length > 0) {
+        setPlayerQuestions(order.map(child => messages[child] as Message));
+      } else {
+        setPlayerQuestions(conversation.questions.map(child => messages[child] as Message)); 
+      }
       setTimeout(() => {
-        if(order.length > 0) {
-          setPlayerQuestions(order.map(child => messages[child] as Message));
-        } else {
-          setPlayerQuestions(conversation.questions.map(child => messages[child] as Message)); 
-        }
         setMoveTaken(false);
-        setSelectedMessage('');
-        setNPC(npc => ({
-          ...npc,
-          recentHit: undefined,
-        }))
-      }, 1000);
+      }, 500);
     } else {
       response = messages[message.response.failure[Math.floor(Math.random() * message.response.failure.length)]] as ResponseMessage;
       setPlayer(player => ({
         ...player,
         health: player.health - strength,
-        recentHit: - strength,
       }))
       setTimeout(() => {
         setMoveTaken(false);
         setSelectedMessage('');
-        setPlayer(player => ({
-          ...player,
-          recentHit: undefined,
-        }))
-      }, 1000);
+      }, 500);
     }
     setNPCResponse(response);
+  }
+
+  const handleReset = () => {
+    setPlayer(Player);
+    setNPC(NPC);
+    setTime(99);
+    setPlayerQuestions(conversation.questions.map((id) => messages[id] as Message));
+    setNPCResponse(undefined);
+    setGameState(undefined);
+    setSelectedMessage('');
+    setMoveTaken(false);
+    countdownRef.current = setInterval(() => setTime(prev => prev - 1), 1000);
   }
 
   useEffect(() => {
@@ -144,10 +147,13 @@ function App() {
   return (
     <div className="app__container">
       <GameState time={time} />
-      <CharacterDisplay character={player} className="app__container__character-left" image={playerImage}/>
-      <CharacterDisplay character={npc} className="app__container__character-right" image={npcImage}/>
+      <CharacterDisplay character={player} className="app__container__character-left"/>
+      <CharacterImage image={playerImage} className="character-image__left"/>
+      <CharacterDisplay character={npc} className="app__container__character-right"/>
+      <CharacterImage image={npcImage} className="character-image__right"/>
       <MessageList messages={playerQuestions} selectedMessage={selectedMessage} chooseMessage={handleChooseMessage} className="app__container__messages-left"/>
       {npcResponse && <MessageList messages={[npcResponse as Message]} selectedMessage={npcResponse.id} chooseMessage={() => {}} className="app__container__messages-right" showBack={false}/>}
+      {gameState && <GameOver gameState={gameState} handleReset={handleReset} />}
     </div>
   )
 }

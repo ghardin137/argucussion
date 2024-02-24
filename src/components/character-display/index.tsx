@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Character } from '../../types';
 import './character-display.css';
 
-export function CharacterDisplay({ character, className, image }: { character: Character, className: string, image: string }) {
+export function CharacterDisplay({ character, className }: { character: Character, className: string }) {
     const [showStats, setShowStats] = useState(false);
 
     return <div className={`character-display ${className}`}>
@@ -21,9 +21,6 @@ export function CharacterDisplay({ character, className, image }: { character: C
                 <li className="character-display__character-stat">Wit: {character.wit}</li>
             </ul>
         }
-        <div className="character-display__image">
-            <img src={image} />
-        </div>
     </div>
 }
 
