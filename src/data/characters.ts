@@ -16,7 +16,7 @@ export const Player: PlayerType = {
 export const NPC: NPCType = {
     name: "NPC",
     type: CharacterType.NPC,
-    race: Race.Human,
+    race: Race.Goblin,
     charm: 5 + Math.floor(Math.random() * 3),
     imagery: 5 + Math.floor(Math.random() * 3),
     insight: 5 + Math.floor(Math.random() * 3),
