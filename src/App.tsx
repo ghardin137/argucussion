@@ -7,8 +7,6 @@ import { GameOver } from './components/game-over';
 import { ResetGameAction, QuestionChosenAction, ChangeTimeAction, coreReducer, initialState } from './logic';
 import { Message } from './types';
 import './App.css'
-import playerImage from './assets/main_player_demo.png';
-import npcImage from './assets/goblin-banker.png';
 
 function App() {
   const [moveTaken, setMoveTaken] = useState(false);
@@ -49,9 +47,9 @@ function App() {
     <div className="app__container">
       <GameState time={state.time} />
       <CharacterDisplay character={state.player} className="app__container__character-left" />
-      <CharacterImage image={playerImage} className="character-image__left" />
+      <CharacterImage image={state.player.image} className="character-image__left" />
       <CharacterDisplay character={state.npc} className="app__container__character-right" />
-      <CharacterImage image={npcImage} className="character-image__right" />
+      <CharacterImage image={state.npc.image} className="character-image__right" />
       <MessageList messages={state.playerQuestions} selectedMessage={state.selectedMessage} chooseMessage={handleChooseMessage} className="app__container__messages-left" />
       {state.npcResponse && <MessageList messages={[state.npcResponse as Message]} selectedMessage={state.npcResponse.id} chooseMessage={() => { }} className="app__container__messages-right" showBack={false} />}
       {state.gameState && <GameOver gameState={state.gameState} handleReset={handleReset} />}

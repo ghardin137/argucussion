@@ -1,5 +1,23 @@
 import { Message, MessageType, ResponseMessage, StatType, Conversation } from '../types';
 
+const message1: Message = {
+    id: 'message1',
+    type: MessageType.Question,
+    primaryStat: StatType.Intuition,
+    text: 'Intuition Question',
+    response: {
+        success: [
+            'success1a', 'success1b', 'success1c', 'success1d', 'success1e'
+        ],
+        failure: [
+            'failure1a', 'failure1b', 'failure1c'
+        ],
+    },
+    children: [
+        'message1a', 'message1b'
+    ],
+}
+
 const message1a: Message = {
     id: 'message1a',
     parentId: 'message1',
@@ -32,24 +50,6 @@ const message1b: Message = {
         ],
     },
     children: [],
-}
-
-const message1: Message = {
-    id: 'message1',
-    type: MessageType.Question,
-    primaryStat: StatType.Intuition,
-    text: 'Intuition Question',
-    response: {
-        success: [
-            'success1a', 'success1b', 'success1c', 'success1d', 'success1e'
-        ],
-        failure: [
-            'failure1a', 'failure1b', 'failure1c'
-        ],
-    },
-    children: [
-        'message1a', 'message1b'
-    ],
 }
 
 const message2: Message = {

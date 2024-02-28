@@ -1,4 +1,6 @@
 import { PlayerType, NPCType, CharacterType, Race } from '../types'
+import playerImage from '../assets/main_player_demo.png';
+import npcImage from '../assets/goblin-banker.png';
 
 export const Player: PlayerType = {
     name: "Player",
@@ -11,6 +13,7 @@ export const Player: PlayerType = {
     observation: 5 + Math.floor(Math.random() * 3),
     wit: 5 + Math.floor(Math.random() * 3),
     health: 100,
+    image: playerImage,
 }
 
 export const NPC: NPCType = {
@@ -24,6 +27,7 @@ export const NPC: NPCType = {
     observation: 5 + Math.floor(Math.random() * 3),
     wit: 5 + Math.floor(Math.random() * 3),
     health: 100,
+    image: npcImage,
 }
 
 

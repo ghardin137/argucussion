@@ -30,19 +30,22 @@ enum ActionType {
 
 type Action = { type: ActionType.CHANGE_TIME } | { type: ActionType.QUESTION_CHOSEN, payload: { id: string } } | { type: ActionType.RESET_GAME };
 
+const statModifier = (stat: number) => {
+    return Math.floor((stat - 5) / 2);
+}
+
 const determineHit = (state: CoreState, id: string) => {
     const message = messages[id] as Message;
     const { primaryStat } = message;
     const counterStat = Stats[primaryStat].counter;
     const playerStat = state.player[primaryStat];
     const npcStat = state.npc[counterStat];
-    const playerRoll = Math.ceil(Math.random() * 20) + playerStat;
-    const npcRoll = Math.ceil(Math.random() * 20) + npcStat;
-
+    const playerRoll = Math.ceil(Math.random() * 20) + statModifier(playerStat);
+    const npcRoll = Math.ceil(Math.random() * 20) + statModifier(npcStat);
     return playerRoll > npcRoll;
 }
 
-const statModifier = (stat: number) => {
+const damageModifier = (stat: number) => {
     return Math.floor(Math.pow((stat / 3), 2));
 }
 
@@ -53,10 +56,10 @@ const determineHitStrength = (state: CoreState, hit: boolean, id: string) => {
     const playerStat = state.player[primaryStat];
     const npcStat = state.npc[counterStat];
 
-    let strength = Math.round(Math.random() * npcStat) + statModifier(npcStat);
+    let strength = Math.round(Math.random() * npcStat) + damageModifier(npcStat);
 
     if (hit) {
-        strength = Math.round(Math.random() * playerStat) + statModifier(playerStat);
+        strength = Math.round(Math.random() * playerStat) + damageModifier(playerStat);
     }
 
     return strength;
@@ -113,7 +116,7 @@ const questionChosenReducer = (state: CoreState, id: string): CoreState => {
 
     const hit = determineHit(state, id);
     const strength = determineHitStrength(state, hit, id);
-
+    console.log(hit)
     let npcResponse;
     let gameState;
     if (hit) {

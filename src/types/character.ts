@@ -46,7 +46,7 @@ export interface Character {
     observation: number;
     wit: number;
     health: number;
-    recentHit?: number;
+    image: string;
 }
 
 export interface PlayerType extends Character {
