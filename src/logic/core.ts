@@ -10,6 +10,7 @@ export type CoreState = {
     selectedMessage: string;
     gameState?: "win" | "lose";
     time: number;
+    started: boolean;
 }
 
 export const initialState: CoreState = {
@@ -20,15 +21,17 @@ export const initialState: CoreState = {
     npcResponse: undefined,
     gameState: undefined,
     time: 99,
+    started: false,
 }
 
 enum ActionType {
     CHANGE_TIME = "CHANGE_TIME",
     QUESTION_CHOSEN = "QUESTION_CHOSEN",
     RESET_GAME = "RESET_GAME",
+    START_GAME = "START_GAME",
 }
 
-type Action = { type: ActionType.CHANGE_TIME } | { type: ActionType.QUESTION_CHOSEN, payload: { id: string } } | { type: ActionType.RESET_GAME };
+type Action = { type: ActionType.CHANGE_TIME } | { type: ActionType.QUESTION_CHOSEN, payload: { id: string } } | { type: ActionType.RESET_GAME } | { type: ActionType.START_GAME };
 
 const statModifier = (stat: number) => {
     return Math.floor((stat - 5) / 2);
@@ -89,6 +92,7 @@ const resetGameReducer = (): CoreState => {
         gameState: undefined,
         selectedMessage: '',
         time: 99,
+        started: true,
     }
 }
 
@@ -161,6 +165,10 @@ const questionChosenReducer = (state: CoreState, id: string): CoreState => {
     }
 }
 
+const startGameReducer = (state: CoreState) => {
+    return {...state, started: true };
+}
+
 
 export const coreReducer = (state: CoreState, action: Action): CoreState => {
     switch (action.type) {
@@ -172,6 +180,10 @@ export const coreReducer = (state: CoreState, action: Action): CoreState => {
 
         case ActionType.RESET_GAME:
             return resetGameReducer();
+
+        case ActionType.START_GAME: 
+            return startGameReducer(state);
+
         default:
             return state;
     }
@@ -187,4 +199,8 @@ export const QuestionChosenAction = (id: string) => {
 
 export const ResetGameAction = () => {
     return { type: ActionType.RESET_GAME as const };
+}
+
+export const StartGameAction = () => {
+    return { type: ActionType.START_GAME as const };
 }

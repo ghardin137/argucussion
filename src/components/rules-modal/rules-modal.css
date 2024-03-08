@@ -1,0 +1,40 @@
+.modal__overlay {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0,0,0,0.75);
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal__container {
+    width: 40%;
+    background-color: black;
+    border-radius: 10px;
+    padding: 20px;
+    border: 3px solid darkgray;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal__container__stats {
+    display: flex;
+    margin: 0;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal__container__stats ul {
+    list-style-type: none;
+    list-style-image: none;
+    padding-left: 0;
+    text-align: left;
+    flex-grow: 1;
+}
+
+.modal__container__stats div {
+    flex-grow: 1;
+}

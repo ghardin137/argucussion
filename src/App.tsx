@@ -1,10 +1,11 @@
 import { useState, useReducer, useEffect, useRef } from 'react'
-import { CharacterDisplay } from './components/character-display';
-import { CharacterImage } from './components/character-image';
-import { MessageList } from './components/message-list';
-import { GameState } from './components/game-state';
-import { GameOver } from './components/game-over';
-import { ResetGameAction, QuestionChosenAction, ChangeTimeAction, coreReducer, initialState } from './logic';
+import { CharacterDisplay } from '@components/character-display';
+import { CharacterImage } from '@components/character-image';
+import { MessageList } from '@components/message-list';
+import { GameState } from '@components/game-state';
+import { GameOver } from '@components/game-over';
+import { RulesModal } from '@components/rules-modal';
+import { ResetGameAction, QuestionChosenAction, ChangeTimeAction, coreReducer, initialState, StartGameAction } from './logic';
 import { Message } from './types';
 import './App.css'
 
@@ -31,8 +32,12 @@ function App() {
     countdownRef.current = setInterval(() => dispatch(ChangeTimeAction()), 1000);
   }
 
-  useEffect(() => {
+  const startGame = () => {
+    dispatch(StartGameAction());
     countdownRef.current = setInterval(() => dispatch(ChangeTimeAction()), 1000);
+  }
+
+  useEffect(() => {
     return () => clearInterval(countdownRef.current);
   }, []);
 
@@ -44,16 +49,19 @@ function App() {
   }, [state])
 
   return (
-    <div className="app__container">
-      <GameState time={state.time} />
-      <CharacterDisplay character={state.player} className="app__container__character-left" />
-      <CharacterImage image={state.player.image} className="character-image__left" />
-      <CharacterDisplay character={state.npc} className="app__container__character-right" />
-      <CharacterImage image={state.npc.image} className="character-image__right" />
-      <MessageList messages={state.playerQuestions} selectedMessage={state.selectedMessage} chooseMessage={handleChooseMessage} className="app__container__messages-left" />
-      {state.npcResponse && <MessageList messages={[state.npcResponse as Message]} selectedMessage={state.npcResponse.id} chooseMessage={() => { }} className="app__container__messages-right" showBack={false} />}
-      {state.gameState && <GameOver gameState={state.gameState} handleReset={handleReset} />}
-    </div>
+    <>
+      <div className="app__container">
+        <GameState time={state.time} />
+        <CharacterDisplay character={state.player} className="app__container__character-left" />
+        <CharacterImage image={state.player.image} className="character-image__left" />
+        <CharacterDisplay character={state.npc} className="app__container__character-right" />
+        <CharacterImage image={state.npc.image} className="character-image__right" />
+        <MessageList messages={state.playerQuestions} selectedMessage={state.selectedMessage} chooseMessage={handleChooseMessage} className="app__container__messages-left" />
+        {state.npcResponse && <MessageList messages={[state.npcResponse as Message]} selectedMessage={state.npcResponse.id} chooseMessage={() => { }} className="app__container__messages-right" showBack={false} />}
+        {state.gameState && <GameOver gameState={state.gameState} handleReset={handleReset} />}
+      </div>
+      {!state.started && <RulesModal onStartGame={startGame} />}
+    </>
   )
 }
 

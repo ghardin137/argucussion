@@ -37,7 +37,7 @@ export type Stat = {
     description: string;
 }
 
-export interface Character {
+export type Character = {
     name: string;
     charm: number;
     imagery: number;
@@ -49,12 +49,12 @@ export interface Character {
     image: string;
 }
 
-export interface PlayerType extends Character {
+export type PlayerType =  Character & {
     type: CharacterType.Player;
     race: PlayerRace;
 }
 
-export interface NPCType extends Character {
+export type NPCType = Character & {
     type: CharacterType.NPC;
     race: Race;
 }
