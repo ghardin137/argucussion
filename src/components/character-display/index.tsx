@@ -8,8 +8,8 @@ export function CharacterDisplay({ character, className }: { character: Characte
     return <div className={`character-display ${className}`}>
         <h2 onMouseOver={() => setShowStats(true)} onMouseOut={() => setShowStats(false)}>{character.name}</h2>
         <div className="character-display__health-bar">
-            <div className="character-display__health-bar__full" style={{flexGrow: character.health }}/>
-            <div className="character-display__health-bar__empty" style={{flexGrow: 100-character.health }}/>
+            <div className="character-display__health-bar__full" style={{ flexGrow: character.health }}/>
+            <div className="character-display__health-bar__empty" style={{ flexGrow: character.maxHealth - character.health }}/>
         </div>
         {showStats &&
             <ul className="character-display__character-stats">

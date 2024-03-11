@@ -46,6 +46,7 @@ export type Character = {
     observation: number;
     wit: number;
     health: number;
+    maxHealth: number;
     image: string;
 }
 

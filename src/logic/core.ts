@@ -1,5 +1,5 @@
-import { Player, NPC, messages, Stats, conversation } from '../data';
-import { Character, Message, ResponseMessage } from '../types';
+import { Player, NPC, GiantNPC, messages, Stats, conversation } from '../data';
+import { Character, Message, ResponseMessage, MessageType } from '../types';
 
 
 export type CoreState = {
@@ -15,10 +15,10 @@ export type CoreState = {
 
 export const initialState: CoreState = {
     player: Player,
-    npc: NPC,
+    npc: Math.round(Math.random()) ? NPC : GiantNPC,
     playerQuestions: conversation.questions.map((id) => messages[id] as Message),
     selectedMessage: '',
-    npcResponse: undefined,
+    npcResponse: { id: 'start', type: MessageType.Response, text: "Can I help you?" },
     gameState: undefined,
     time: 99,
     started: false,
@@ -86,9 +86,9 @@ const changeTimeReducer = (state: CoreState): CoreState => {
 const resetGameReducer = (): CoreState => {
     return {
         player: Player,
-        npc: NPC,
+        npc: Math.round(Math.random()) ? NPC : GiantNPC,
         playerQuestions: conversation.questions.map((id) => messages[id] as Message),
-        npcResponse: undefined,
+        npcResponse: { id: 'start', type: MessageType.Response, text: "Can I help you?" },
         gameState: undefined,
         selectedMessage: '',
         time: 99,
@@ -120,14 +120,14 @@ const questionChosenReducer = (state: CoreState, id: string): CoreState => {
 
     const hit = determineHit(state, id);
     const strength = determineHitStrength(state, hit, id);
-    console.log(hit)
+
     let npcResponse;
     let gameState;
     if (hit) {
         npcResponse = messages[message.response.success[Math.floor(Math.random() * message.response.success.length)]] as ResponseMessage;
         const npc = {
             ...state.npc,
-            health: state.npc.health - strength,
+            health: state.npc.health - strength > 0 ? state.npc.health - strength : 0,
         };
 
         if(npc.health <= 0) {
@@ -151,7 +151,7 @@ const questionChosenReducer = (state: CoreState, id: string): CoreState => {
         npcResponse = messages[message.response.failure[Math.floor(Math.random() * message.response.failure.length)]] as ResponseMessage;
         const player = {
             ...state.player,
-            health: state.player.health - strength,
+            health: state.player.health - strength > 0 ? state.player.health - strength : 0,
         };
         if(player.health <= 0) {
             gameState = "lose" as const;
