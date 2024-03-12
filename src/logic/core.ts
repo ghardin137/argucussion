@@ -132,6 +132,7 @@ const questionChosenReducer = (state: CoreState, id: string): CoreState => {
 
         if(npc.health <= 0) {
             gameState = "win" as const;
+            npcResponse = conversation.successMessage;
         }
 
         if (order.length === 0) {
@@ -155,6 +156,7 @@ const questionChosenReducer = (state: CoreState, id: string): CoreState => {
         };
         if(player.health <= 0) {
             gameState = "lose" as const;
+            npcResponse = conversation.failMessage;
         }
         return {
             ...state,
